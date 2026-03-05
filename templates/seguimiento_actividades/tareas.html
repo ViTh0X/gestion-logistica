@@ -45,7 +45,8 @@
                             <a href="{% url 'editar_subtarea' pk=subtarea.id_tarea %}">Editar Tarea</a>
                         </td>
                     </tr>
-                {% endif %}            
+                {% endif %}
+                {% endfor %}            
             {% endfor %}           
         {% empty %}
         <tr>
