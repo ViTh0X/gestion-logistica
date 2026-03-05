@@ -81,7 +81,7 @@ def editar_subtarea(request,pk):
         formulario_subtarea = SubtareaEditForm(request.POST, instance=sub_tarea)
         if formulario_subtarea.is_valid():
             formulario_subtarea.save()
-            return redirect('ver_tareas',pk=sub_tarea.id_proyecto)
+            return redirect('ver_tareas',pk=sub_tarea.id_proyecto.id)
     else:
         formulario_subtarea = SubtareaEditForm(instance=sub_tarea)
     return render(request,'seguimiento_actividades/formulario_editar_subtarea.html',{'formulario_subtarea':formulario_subtarea,'sub_tarea':sub_tarea})
