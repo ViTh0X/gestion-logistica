@@ -8,18 +8,43 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="{% static 'seguimiento/style.css' %}">
-    <title>Agregando Gestion</title>
+    <title>Agregando Tarea</title>
 </head>
 <body>
-    <h1>Agregando Tareas al Proyecto: {{ proyecto.nombre_proyecto }}</h1>
+    <h1>Agregando Gestion a Subtarea: {{ subtarea.detalle_subtarea }}</h1>
     <form method="POST">
         {% csrf_token %}
-        <div>
-            <label for="">Nombre Tarea:</label>
-            {{ formulario_tarea.detalle_tarea }}
+        <div>            
+            <label for="">Nombre Proyecto:</label>
+            <label for="">{{ subtarea.id_proyecto.nombre_proyecto }}</label>
         </div>        
+        <div>            
+            <label for="">Nombre Tarea:</label>
+            <label for="">{{ subtarea.id_tarea.detalle_tarea }}</label>
+        </div>        
+        <div>            
+            <label for="">Nombre SubTarea:</label>
+            <label for="">{{ subtarea.detalle_subtarea }}</label>
+        </div>        
+        <div>            
+            <label for="">Responsable:</label>
+            <label for="">{{ detalle_subtarea.responsable_asignado.nombre }}</label>
+        </div>        
+        <div>            
+            <label for="">Fecha Inicio:</label>
+            <label for="">{{ inicio_actividad|date:'d-m-Y' }}</label>
+        </div>        
+        <div>            
+            <label for="">Fecha Fin:</label>
+            <label for="">{{ fin_actividad|date:'d-m-Y' }}</label>
+        </div>       
+        <div>
+            <label for="">Detalles:</label>
+            {{ formulario_gestion.detalle_gestion }}
+        </div>
+        
         <button type="submit">Agregar</button>
-        <a href="{% url 'ver_tareas' pk=proyecto.id  %}">Ir a Tareas</a>
+        <a href="{% url 'ver_tareas' pk=subtarea.id_proyecto.id  %}">Ir a Tareas</a>
     </form>
 </body>
 </html>
