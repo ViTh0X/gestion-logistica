@@ -36,7 +36,7 @@
             {{ formulario_subtarea.estado_tareas }}
         </div>        
         <button type="submit">Modificar</button>
-        <a href="{% url 'ver_tareas' pk=tarea.id_proyecto  %}">Ir a Tareas</a>
+        <a href="{% url 'ver_tareas' pk=tarea.id_proyecto.id  %}">Ir a Tareas</a>
     </form>
 </body>
 </html>
