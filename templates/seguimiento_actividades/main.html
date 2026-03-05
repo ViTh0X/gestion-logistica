@@ -26,7 +26,7 @@
             <button type="submit">Ver Tareas</button>
         </div>
     </form> 
-    {% endif %}
+    {% else %}
     <p>
         <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +40,7 @@
         </svg>
         Atencion, No Creaste Ningun Proyecto.
     </p>                           
-    <a href="{% url 'agregar_proyecto' %}">Crear Un Proyecto</a>
+    {% endif%}
+    <a href="{% url 'agregar_proyecto' %}">Crear Un Proyecto</a>    
 </body>
 </html>
