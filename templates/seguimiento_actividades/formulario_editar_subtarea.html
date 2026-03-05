@@ -11,7 +11,7 @@
     <title>Editando SubTarea</title>
 </head>
 <body>
-    <h1>Agregando SubTareas al Proyecto: {{ sub_tarea.id_proyecto.nombre_proyecto }}</h1>
+    <h1>Editando SubTareas al Proyecto: {{ sub_tarea.id_proyecto.nombre_proyecto }}</h1>
     <h2>Pertenece a la Tarea: {{ sub_tarea.id_tarea.detalle_tarea }}</h2>
     <form method="POST">
         {% csrf_token %}
@@ -36,7 +36,7 @@
             {{ formulario_subtarea.estado_tareas }}
         </div>        
         <button type="submit">Modificar</button>
-        <a href="{% url 'ver_tareas' pk=tarea.id_proyecto.id  %}">Ir a Tareas</a>
+        <a href="{% url 'ver_tareas' pk=sub_tarea.id_proyecto.id  %}">Ir a Tareas</a>
     </form>
 </body>
 </html>
