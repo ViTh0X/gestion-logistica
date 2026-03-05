@@ -13,7 +13,8 @@
 <body>
     <h1>Sistema Gestion Actividades:</h1>
     {% if proyectos %}    
-    <form action="POST">
+    <form method="POST">
+        {% csrf_token %}
         <div>
             <select name="proyecto_seleccionado">
                 {% for proyecto in proyectos %}

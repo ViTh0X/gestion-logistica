@@ -13,7 +13,8 @@
 <body>
     <h1>Agregando SubTareas al Proyecto: {{ tarea.id_proyecto.nombre_proyecto }}</h1>
     <h2>Pertenece a la Tarea: {{ tarea.detalle_tarea }}</h2>
-    <form action="POST">
+    <form method="POST">
+        {% csrf_token %}
         <div>
             <label for="">Nombre SubTarea:</label>
             {{ formulario_subtarea.detalle_subtarea }}

@@ -12,7 +12,8 @@
 </head>
 <body>
     <h1>Agregando un Nuevo Proyecto</h1>
-    <form action="POST">
+    <form method="POST">
+        {% csrf_token %}
         <div>
             <label for="">Nombre Proyecto:</label>
             {{ formulario_proyecto.nombre_proyecto }}
