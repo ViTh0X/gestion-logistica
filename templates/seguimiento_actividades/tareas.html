@@ -23,8 +23,12 @@
                 <th>Responsable</th>
             </tr>
         </thead> {% endcomment %}
+        <div>
+            <a href="{% url 'agregar_tarea' pk=proyecto.id %}">Agregar Nueva Tarea</a>
+            <a href="{% url 'agregar_subtarea_seleccionada' pk=proyecto.id %}">Agregar SubTareas</a>                    
+        </div>
         <tbody>
-            {% for tare in tareas %}
+            {% for tarea in tareas %}
             <tr>
                 <td>{{ tarea.detalle_tarea }}</td>
             </tr>                         
@@ -41,14 +45,10 @@
                             <a href="{% url 'editar_subtarea' pk=subtarea.id_tarea %}">Editar Tarea</a>
                         </td>
                     </tr>
-                {% endif %}
-            <a href="{% url 'agregar_tarea' pk=proyecto.id %}">Agregar Nueva Tarea</a>
-            <a href="{% url 'agregar_subtarea_seleccionada' pk=proyecto.id %}">Agregar SubTareas</a>                    
-                {% endfor %}           
-        </tbody>
-        
-    </table>    
-            {% empty %}
+                {% endif %}            
+            {% endfor %}           
+        {% empty %}
+        <tr>
             <p>
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,6 +63,8 @@
                 Atencion, No Creaste Ninguna Tarea para este Proyecto.
             </p>                           
             <a href="{% url 'main_seguimiento_actividades' %}">Volver a los Proyectos</a>
-            {% endfor %}                        
+        </tr>                    
+        </tbody>        
+    </table>                                                       
 </body>
 </html>
