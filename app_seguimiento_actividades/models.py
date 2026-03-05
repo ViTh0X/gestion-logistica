@@ -56,7 +56,7 @@ class SubTareas(models.Model):
     id = models.AutoField(primary_key=True)
     id_proyecto = models.ForeignKey(Proyectos,on_delete=models.CASCADE)
     id_tarea = models.ForeignKey(Tareas,on_delete=models.CASCADE)
-    detalle_subtarea = models.TextField(max_length=300)
+    detalle_subtarea = models.TextField(max_length=350)
     inicio_actividad = models.DateField()
     fin_actividad = models.DateField()
     responsable_asignado = models.ForeignKey(Responsables, on_delete=models.CASCADE)
