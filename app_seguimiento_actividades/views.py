@@ -66,12 +66,13 @@ def agregar_subtarea(request,pk):
 
 def agregar_subtarea_seleccionada(request,pk):
     tareas_proyecto = Tareas.objects.filter(id_proyecto=pk)
+    proyecto = Proyectos.objects.get(pk=pk)
     if request.method == 'POST':
         tarea_id = request.POST.get('tarea_seleccionada')
         if tarea_id:
             return redirect('agregar_subtarea',pk=tarea_id)
         
-    return render(request,'seguimiento_actividades/listado_tareas_x_proyecto.html',{'tareas_proyecto':tareas_proyecto})
+    return render(request,'seguimiento_actividades/listado_tareas_x_proyecto.html',{'tareas_proyecto':tareas_proyecto,'proyecto':proyecto})
 
 
 def editar_subtarea(request,pk):

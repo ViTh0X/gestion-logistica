@@ -11,7 +11,7 @@
     <title>Tareas</title>
 </head>
 <body>
-    <h1>Tareas de proyecto:</h1>
+    <h1>Tareas de proyecto: {{ proyecto.nombre_proyecto }}</h1>
     {% if tareas_proyecto %}    
     <form method="POST">
         {% csrf_token %}
@@ -27,7 +27,7 @@
             <button type="submit">Agregar SubTareas</button>
         </div>
     </form> 
-    {% endif %}
+    {% else %}
     <p>
         <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -41,6 +41,7 @@
         </svg>
         Atencion, No Creaste Ningun Tarea en este Proyecto.
     </p>                           
-    <a href="">Crear Un Proyecto</a>
+    {% endif %}        
+    <a href="{% url 'ver_tareas' pk=proyecto.id %}">Ir a Tareas</a>
 </body>
 </html>
