@@ -29,23 +29,23 @@
         </div>
         <tbody>
             {% for tarea in tareas %}
-            <tr>
-                <td>{{ tarea.detalle_tarea }}</td>
-            </tr>                         
+                <tr>
+                    <td>{{ tarea.detalle_tarea }}</td>
+                </tr>                         
                 {% for subtarea in subtareas %}
-                {% if subtarea.id_tarea == tarea.id %}
-                    <tr>
-                        <td>{{ subtarea.detalle_subtarea }}</td>
-                        <td>{{ subtarea.inicio_actividad|date:'d-m-Y' }}</td>
-                        <td>{{ subtarea.fin_actividad|date:'d-m-Y' }}</td>
-                        <td>{{ subtarea.responsable_asignados }}</td>
-                        <td>
-                            <a href="{% url 'agregar_gestion' pk=subtarea.id_tarea %}">Agregar Gestion</a>
-                            <a href="{% url 'listar_gestion' pk=subtarea.id_tarea %}">Ver Todas las Gestiones</a>
-                            <a href="{% url 'editar_subtarea' pk=subtarea.id_tarea %}">Editar Tarea</a>
-                        </td>
-                    </tr>
-                {% endif %}
+                    {% if subtarea.id_tarea.id == tarea.id %}
+                        <tr>
+                            <td>{{ subtarea.detalle_subtarea }}</td>
+                            <td>{{ subtarea.inicio_actividad|date:'d-m-Y' }}</td>
+                            <td>{{ subtarea.fin_actividad|date:'d-m-Y' }}</td>
+                            <td>{{ subtarea.responsable_asignados }}</td>
+                            <td>
+                                <a href="{% url 'agregar_gestion' pk=subtarea.id_tarea %}">Agregar Gestion</a>
+                                <a href="{% url 'listar_gestion' pk=subtarea.id_tarea %}">Ver Todas las Gestiones</a>
+                                <a href="{% url 'editar_subtarea' pk=subtarea.id_tarea %}">Editar Tarea</a>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}                                   
             {% empty %}
             <tr>
