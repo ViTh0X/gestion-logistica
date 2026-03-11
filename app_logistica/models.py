@@ -133,7 +133,7 @@ class Items(models.Model):
     modelo_item = models.CharField(max_length=20, blank=True, null=True)
     serie_item = models.CharField(max_length=20, blank=True,null=True)
     imagen_qr = models.ImageField(upload_to='imagenes_qr/',blank=True,null=True)    
-    cantidad_items = models.IntegerField(default=1)
+    cantidad_items = models.IntegerField(default=0)
     tipo_moneda = models.ForeignKey(TipoMoneda,on_delete=models.CASCADE)    
     precio_unitario = models.DecimalField(max_digits=10,decimal_places=2)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.CASCADE,null=True,blank=True)

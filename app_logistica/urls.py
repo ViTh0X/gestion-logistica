@@ -4,9 +4,10 @@ from . import views
 
 urlpatterns = [
     path('',views.logistica_items,name='logistica_items'),
-    path('agregar-items',views.agregar_items,name='agregar_items'),
+    path('agregar-item-tipo-item',views.agregar_item_tipo_item,name='agregar_item_tipo_item'),
+    path('agregar-items-stock/<int:pk>/',views.agregar_item_stock,name='agregar_item_stock'),
     path('editar-item/<int:pk>/',views.editar_item,name='editar_item'),
-    path('editar-item-celular/<int:pk>/',views.editar_item_celular,name='editar_item_celular'),
+    #path('editar-item-celular/<int:pk>/',views.editar_item_celular,name='editar_item_celular'),
     path('inventariar-articulo/<int:pk>/',views.inventariar_articulo,name='inventariar_articulo'),
     path('eliminar-articulo/<int:pk>/',views.eliminar_articulo,name='eliminar_articulo'),
     path('historial-inventario-articulo/<int:pk>/',views.historial_inventario_articulo,name='historial_inventario_articulo'),

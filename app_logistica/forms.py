@@ -5,19 +5,33 @@ from .models import *
 class Login_Formulario(forms.Form):
     usuario = forms.CharField(required=True,widget=forms.TextInput(attrs={'autocomplete':'off'}))
     password = forms.CharField(required=True,widget=forms.PasswordInput(attrs={'autocomplete':'off'}))
-    
+
+
 class AlmacenesForm(forms.ModelForm):
     
     class Meta:
         model = Almacenes
-        fields = ['nombre_almacen','descripcion_almacen','direccion_almacen']
+        fields = ['nombre_almacen','descripcion_almacen','direccion_almacen','tipo_item']
     
-class ItemsForm(forms.ModelForm):
+class ItemsFormStock(forms.ModelForm):
+    
+    class Meta:
+        model = Items
+        fields = ['nombre_item','tipo_item','tipo_moneda','precio_unitario']
+        
+        
+class ItemsFormSerializable(forms.ModelForm):
     
     class Meta:
         model = Items
         fields = ['nombre_item','tipo_item','cantidad_items','descripcion_item','id_area','id_estado']
         
+                
+class TipoItemForm(forms.ModelForm):
+    
+    class Meta:
+        model = TipoItems
+        fields = ['nombre_tipo']
 
 
     

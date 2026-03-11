@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http import HttpResponse, FileResponse, Http404
 
 #Login
-from .forms import  Login_Formulario,AlmacenesForm,ItemsForm
+from .forms import  Login_Formulario,AlmacenesForm,ItemsFormStock,ItemsFormSerializable,TipoItemForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -56,22 +56,40 @@ def logistica_items(request):
     return render(request,'logistica/items.html',{'items':items})
 
 @login_required(login_url="login_logistica")
-def agregar_items(request):
+def agregar_item_tipo_item(request):    
     if request.method == 'POST':
-        form = ItemsForm(request.POST)
+        formulario_tipo_item = TipoItemForm(request.POST)
+        if formulario_tipo_item.is_valid():
+            tipo_item_seleccionado =  formulario_tipo_item.cleaned_data['nombre_tipo']
+            tipo_item = TipoItems.objects.get(nombre_tipo=tipo_item_seleccionado)
+            if tipo_item.id_tipo == 1:                
+                return redirect('agregar_item_stock',pk=tipo_item.id_tipo)
+            else:
+                return redirect('agregar_item_serializable',pk=tipo_item.id_tipo)
+    formulario_tipo_item = TipoItemForm()
+    return render()
+    
+@login_required(login_url="login_logistica")
+def agregar_item_stock(request,pk):
+    tipo_item = TipoItems.objects.get(pk=pk)        
+    if request.method == 'POST':
+        form = ItemsFormStock(request.POST)
         if form.is_valid():
-            item = form.save()
-            qr_link = f"http://192.168.0.25:8000/logistica/editar-item-celular/{item.pk}"
+            form_item_stock = ItemsFormStock(commit=False)
+            form_item_stock.cantidad_items = 0
+            form_item_stock.save()
+            return redirect ('logistica_items')
+            #item = form.save()
+            #qr_link = f"http://192.168.0.25:8000/logistica/editar-item-celular/{item.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
-            nombre_archivo_qr = generar_qr(item.pk,qr_link)
-            item.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
-            item.save()
-            return redirect ('logistica_items')        
+            #nombre_archivo_qr = generar_qr(item.pk,qr_link)
+            #item.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
+            #item.save()            
     else:
-        form = ItemsForm()
+        form = ItemsFormStock(initial={'tipo_item':tipo_item})
     return render(request,'logistica/formulario_agregar_items.html',{'form':form})
 
-@login_required(login_url="login_logistica")
+'''@login_required(login_url="login_logistica")
 def editar_item_celular(request,pk):            
     item = get_object_or_404(Items,pk=pk)    
     inventario = HistorialInventarios.objects.filter(id_item=pk)    
@@ -83,7 +101,7 @@ def editar_item_celular(request,pk):
         return redirect('logistica_items')
     else:
         form = ItemsForm(instance=item)
-    return render(request,'logistica/formulario_editar_item_celular.html',{'form':form,'item':item,'inventario':inventario})
+    return render(request,'logistica/formulario_editar_item_celular.html',{'form':form,'item':item,'inventario':inventario})'''
 
 
 @login_required(login_url="login_logistica")
