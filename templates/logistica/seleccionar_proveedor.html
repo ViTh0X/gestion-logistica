@@ -1,0 +1,31 @@
+{% extends "../layout_logistica.html" %}
+{% block titulo %}Tipo de Arituclo{% endblock %}
+{% block contenido %}
+<main>
+    <div class="formularios" >
+        <h1 class="no-margin">Seleccione el Proveedor</h1>        
+        <form method="POST">
+            {% csrf_token %}            
+            <div class="campos_textosimple">
+                <input type="text" name="ruc" id="buscador" placeholder='RUC'>
+                <button hx-get={% url 'buscar_proveedor' %} hx-target='#resultados_busquedas' hx-include='#buscador'                
+                class="boton_formulario"  >
+                    Buscar
+                </button>
+            </div>
+            <div class="tabla_grande_container">
+                <table class="tabla_informacion"> 
+                    <tbody id="resultados_busquedas">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="botones_formularios">
+                <a class="boton_enlace a1" href="{% url 'logistica_items' %}">← Volver a Articulos</a>
+                <button class="boton_formulario" type="submit">Seleccionar</button>
+            </div>
+        </form>
+        <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    </div>    
+</main>
+{% endblock  %}

@@ -11,20 +11,27 @@ class AlmacenesForm(forms.ModelForm):
     
     class Meta:
         model = Almacenes
-        fields = ['nombre_almacen','descripcion_almacen','direccion_almacen','tipo_item']
+        fields = ['nombre_almacen','descripcion_almacen','direccion_almacen']
     
 class ItemsFormStock(forms.ModelForm):
     
     class Meta:
         model = Items
-        fields = ['nombre_item','tipo_item','tipo_moneda','precio_unitario']
+        fields = ['nombre_item','tipo_moneda','precio_unitario']
+        widgets = {
+            'precio_unitario': forms.NumberInput(attrs={
+                'step':'0.01',
+                'min':'0.00'                
+            })
+        }
         
+
         
 class ItemsFormSerializable(forms.ModelForm):
     
     class Meta:
         model = Items
-        fields = ['nombre_item','tipo_item','cantidad_items','descripcion_item','id_area','id_estado']
+        fields = ['nombre_item','tipo_item','cantidad_items','id_area','id_estado']
         
                 
 class TipoItemForm(forms.ModelForm):

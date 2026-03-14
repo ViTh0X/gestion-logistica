@@ -3,16 +3,21 @@
 {% block contenido %}
 <main>
     <div class="formularios" >
-        <h1 class="no-margin">Seleccione el Tipo de Arituclo</h1>        
-        <form method="GET">
+        <h1 class="no-margin">Seleccione el Tipo de Articulo</h1>        
+        <form method="POST">
             {% csrf_token %}            
             <div class="campos_textoopciones">
                 <label for="">Tipo Articulo:</label>
-                {{ form.tipo_item }}
+                <hr>
+                <select name="tipo_item" id="">
+                    {% for tipo in tipos_item %}
+                    <option value="{{ tipo.id_tipo }}">{{ tipo.nombre_tipo }}</option>
+                    {% endfor %}                                        
+                </select>
             </div>            
             <div class="botones_formularios">
                 <a class="boton_enlace a1" href="{% url 'logistica_items' %}">← Volver a Articulos</a>
-                <button class="boton_formulario" type="submit">Seleecionar</button>
+                <button class="boton_formulario" type="submit">Seleccionar</button>
             </div>
         </form>
     </div>    

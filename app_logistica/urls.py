@@ -5,7 +5,11 @@ from . import views
 urlpatterns = [
     path('',views.logistica_items,name='logistica_items'),
     path('agregar-item-tipo-item',views.agregar_item_tipo_item,name='agregar_item_tipo_item'),
-    path('agregar-items-stock/<int:pk>/',views.agregar_item_stock,name='agregar_item_stock'),
+    path('agregar-stock/<int:pk>/',views.agregar_item_stock,name='agregar_item_stock'),
+    path('agregar-serializable/<int:pk>/',views.agregar_item_serializable,name='agregar_item_serializable'),
+    path('seleccionar-proveedor/',views.seleccionar_proveedor,name='seleccionar_proveedor'),
+    path('buscar-proveedor/',views.buscar_proveedor,name='buscar_proveedor'),
+    path('agregar-proveedor/',views.agregar_proveedor,name='agregar_proveedor'),
     path('editar-item/<int:pk>/',views.editar_item,name='editar_item'),
     #path('editar-item-celular/<int:pk>/',views.editar_item_celular,name='editar_item_celular'),
     path('inventariar-articulo/<int:pk>/',views.inventariar_articulo,name='inventariar_articulo'),

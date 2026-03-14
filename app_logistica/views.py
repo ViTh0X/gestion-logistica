@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Items,Almacenes,HistorialInventarios, ItemsMovimientos, ItemMovimientosCabecera, Colaboradores,EstadoColaboradores,TiposMovimiento,TipoItems,TipoEstadoItems
+from .models import Items,Almacenes,HistorialInventarios, ItemsMovimientos, ItemMovimientosCabecera, Colaboradores,EstadoColaboradores,TiposMovimiento,TipoItems,TipoEstadoItems,Proveedores
 from django.db.models import Count,Exists,Q
 from django.db import transaction
 
@@ -56,18 +56,18 @@ def logistica_items(request):
     return render(request,'logistica/items.html',{'items':items})
 
 @login_required(login_url="login_logistica")
-def agregar_item_tipo_item(request):    
-    if request.method == 'POST':
-        formulario_tipo_item = TipoItemForm(request.POST)
-        if formulario_tipo_item.is_valid():
-            tipo_item_seleccionado =  formulario_tipo_item.cleaned_data['nombre_tipo']
-            tipo_item = TipoItems.objects.get(nombre_tipo=tipo_item_seleccionado)
-            if tipo_item.id_tipo == 1:                
-                return redirect('agregar_item_stock',pk=tipo_item.id_tipo)
-            else:
-                return redirect('agregar_item_serializable',pk=tipo_item.id_tipo)
+def agregar_item_tipo_item(request):
+    tipos_item = TipoItems.objects.all()    
+    if request.method == 'POST':        
+        tipo_item_seleccionado = request.POST.get('tipo_item')
+        tipo_item = TipoItems.objects.get(pk=int(tipo_item_seleccionado))
+        print("Hasta aqui esta bien")
+        if tipo_item.id_tipo == 1:                
+            return redirect('agregar_item_stock',pk=tipo_item.id_tipo)
+        else:
+            return redirect('seleccionar_proveedor')
     formulario_tipo_item = TipoItemForm()
-    return render()
+    return render(request,'logistica/seleccionar_tipo_item.html',{'tipos_item':tipos_item})
     
 @login_required(login_url="login_logistica")
 def agregar_item_stock(request,pk):
@@ -77,18 +77,35 @@ def agregar_item_stock(request,pk):
         if form.is_valid():
             form_item_stock = ItemsFormStock(commit=False)
             form_item_stock.cantidad_items = 0
-            form_item_stock.save()
-            return redirect ('logistica_items')
-            #item = form.save()
-            #qr_link = f"http://192.168.0.25:8000/logistica/editar-item-celular/{item.pk}"
+            form_item_stock.tipo_item = tipo_item                                  
+            item = form_item_stock.save()                        
+            qr_link = f"http://192.168.0.25:8000/logistica/editar-item-celular/{item.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
-            #nombre_archivo_qr = generar_qr(item.pk,qr_link)
-            #item.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
-            #item.save()            
+            nombre_archivo_qr = generar_qr(item.pk,qr_link)
+            item.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
+            item.save()            
+            return redirect ('logistica_items')
     else:
-        form = ItemsFormStock(initial={'tipo_item':tipo_item})
-    return render(request,'logistica/formulario_agregar_items.html',{'form':form})
+        form = ItemsFormStock()
+        #form = ItemsFormStock(initial={'tipo_item':tipo_item})
+    return render(request,'logistica/formulario_agregar_item_stock.html',{'form':form})
 
+
+def agregar_item_serializable(request):
+    return Http404
+
+def seleccionar_proveedor(request):
+    return render(request,'logistica/seleccionar_proveedor.html')            
+
+def buscar_proveedor(request):
+    data_input = request.GET.get('ruc','')
+    proveedores_encontrados = Proveedores.objects.filter(documento__icontains=data_input)    
+    return render(request,'logistica/resultado_busqueda_proveedor.html',{'proveedores_encontrados':proveedores_encontrados})
+def agregar_proveedor(request):
+    return Http404
+
+def editar_item(request):
+    return Http404
 '''@login_required(login_url="login_logistica")
 def editar_item_celular(request,pk):            
     item = get_object_or_404(Items,pk=pk)    

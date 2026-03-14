@@ -1,7 +1,11 @@
 from django.db import models
 from django.conf import settings
+from decimal import Decimal
+from django.core.validators import MinValueValidator
 import hashlib
 import os
+
+
 
 # Create your models here.
 class Colaboradores(models.Model):
@@ -96,7 +100,7 @@ class TipoItems(models.Model):
 
 class Proveedores(models.Model):
     id_proveedor = models.AutoField(primary_key=True)
-    ruc = models.CharField(max_length=12)
+    documento = models.CharField(max_length=12)
     nombre = models.CharField(max_length=120)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
@@ -118,15 +122,10 @@ class TipoMoneda(models.Model):
     def __str__(self):
         return self.nombre
     
-class DepreciacionItem(models.Model):
-    id_item_editado = models.AutoField(primary_key=True)
-    nombre_item = models.AutoField()
-
     
-
 class Items(models.Model):
     id_item = models.AutoField(primary_key=True)
-    tipo_item = models.ForeignKey(TipoItems,on_delete=models.CASCADE,null=True,blank=True)#desarrollo
+    tipo_item = models.ForeignKey(TipoItems,on_delete=models.CASCADE)#desarrollo
     #tipo_item = models.ForeignKey(TipoItems,on_delete=models.CASCADE)#,null=True,blank=True)produccion
     nombre_item = models.CharField(max_length=100)
     marca_item = models.CharField(max_length=20, blank=True, null=True)    
@@ -134,8 +133,8 @@ class Items(models.Model):
     serie_item = models.CharField(max_length=20, blank=True,null=True)
     imagen_qr = models.ImageField(upload_to='imagenes_qr/',blank=True,null=True)    
     cantidad_items = models.IntegerField(default=0)
-    tipo_moneda = models.ForeignKey(TipoMoneda,on_delete=models.CASCADE)    
-    precio_unitario = models.DecimalField(max_digits=10,decimal_places=2)
+    tipo_moneda = models.ForeignKey(TipoMoneda,on_delete=models.CASCADE,default=1)    
+    precio_unitario = models.DecimalField(max_digits=10,decimal_places=2,default=Decimal('0.00'),validators=[MinValueValidator(Decimal('0.00'))])
     proveedor = models.ForeignKey(Proveedores,on_delete=models.CASCADE,null=True,blank=True)
     id_area = models.ForeignKey(AreasEmpresa,on_delete=models.CASCADE,null=True,blank=True)
     id_estado = models.ForeignKey(TipoEstadoItems,on_delete=models.CASCADE)
@@ -200,15 +199,19 @@ class ItemMovimientosCabecera(models.Model):
     
 class ItemsMovimientos(models.Model):
     id_movimiento = models.AutoField(primary_key=True)
-    id_movimiento_cabezera = models.ForeignKey(ItemMovimientosCabecera,on_delete=models.CASCADE,null=True,blank=True)
+    id_movimiento_cabezera = models.ForeignKey(ItemMovimientosCabecera,on_delete=models.CASCADE)
     id_item = models.ForeignKey(Items,on_delete=models.CASCADE)
+    voucher = models.CharField(max_length=15,blank=True,null=True)
+    referencia = models.CharField(max_length=15,blank=True,null=True)
+    fecha_contable = models.DateField(blank=True,null=True)
+    factura = models.CharField(max_length=15,blank=True,null=True)
     #tipo_movimiento = models.ForeignKey(TiposMovimiento,on_delete=models.CASCADE)#,null=True,blank=True)#produccion    
-    tipo_movimiento = models.ForeignKey(TiposMovimiento,on_delete=models.CASCADE,null=True,blank=True)#desarrollo    
+    tipo_movimiento = models.ForeignKey(TiposMovimiento,on_delete=models.CASCADE)#desarrollo    
     nombre_origen = models.CharField(max_length=150)
     nombre_destino = models.CharField(max_length=150)
-    cantidad_movimiento = models.CharField(max_length=10,default=0)
+    cantidad_movimiento = models.IntegerField(default=1)
     id_movimiento_referencia = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
-    observaciones = models.CharField(max_length=200,default="Sin Observaciones")#,null=True,blank=True)    
+    observaciones = models.CharField(max_length=200,default="Sin Observaciones")
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
     class Meta:
