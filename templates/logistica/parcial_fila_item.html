@@ -1,13 +1,29 @@
 <tr>
-    <td>
+    <td class="celda_recortada"> 
         {{ articulo.nombre_item }}
         <input type="hidden" name="items_ids[]" value="{{ articulo.id_item }}">
     </td>
     <td>
+        {{ voucher }}
+        <input type="hidden" name="items_voucher[]" value="{{ voucher }}">
+    </td>
+    <td>
+        {{ referencia }}
+        <input type="hidden" name="items_referencia[]" value="{{ referencia }}">
+    </td>
+    <td>
+        {{ factura }}
+        <input type="hidden" name="items_factura[]" value="{{ factura }}">
+    </td>
+    <td>
+        {{ fecha_contable }}
+        <input type="hidden" name="items_fechacontable[]" value="{{ fecha_contable }}">
+    </td>
+    <td class="celda_recortada">
         {{ tipo_movimiento }}
         <input type="hidden" name="items_tipo_movimiento[]" value="{{ tipo_movimiento.id_tipo }}">
     </td>
-    <td>
+    <td class="celda_recortada">
         {{ origen }}
         <input type="hidden" name="items_origen[]" value="{{ origen }}">
     </td>
@@ -23,7 +39,7 @@
         {{ mov_ref }}
         <input type="hidden" name="items_mov_ref[]" value="{{ mov_ref }}">
     </td>
-    <td>
+    <td class="celda_recortada">
         {{ observaciones }}
         <input type="hidden" name="items_observaciones[]" value="{{ observaciones }}">
     </td>

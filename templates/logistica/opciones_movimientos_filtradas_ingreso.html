@@ -1,20 +1,21 @@
-<h2 class="no-margin" >Opciones Añadir Articulos</h2>
+<h2 class="no-margin" >Opciones Añadir Stock</h2>
+<div class="movimientos_fila0">
+    <input type="text" name="voucher" placeholder="Voucher" >
+    <input type="text" name="referencia" placeholder="Referencia" >
+    <input type="text" name="factura" placeholder="Factura" >
+    <input type="date" name="fecha_contable">
+</div>
 <div class="movimientos_fila1">
     <select name="articulo" id="articulo">
         <option  value="" disabled selected>--Escoja un Articulo--</option>
         {% for articulo in articulos %}
-            <option value="{{ articulo.id_item }}">ID:[{{ articulo.id_item }}]-Nombre:[{{ articulo.nombre_item }}]-Stock:[{{ articulo.cantidad_items }}]-{{ articulo.id_almacen.nombre_almacen }}-{{ articulo.id_usuario.nombre_colaborador }}</option>
+            <option value="{{ articulo.id_item }}">ID:{{ articulo.id_item }}-{{ articulo.nombre_item }}-Stock:{{ articulo.cantidad_items }}-{{ articulo.id_almacen.nombre_almacen }}-{{ articulo.id_usuario.nombre_colaborador }}</option>
         {% endfor %}    
-    </select>
+    </select>    
     <input type="number" name="cantidad" value="1" min="1" >
 </div>
-<div class="movimientos_fila2">
-    <select name="origen" id="origen">
-        <option  value="" disabled selected>--Escoja un Origen--</option>
-        {% for origen in origenes %}
-            <option value="{{ origen }}">{{ origen }}</option>
-        {% endfor %}    
-    </select>
+<div class="movimientos_fila2">        
+    <input type="text" value="{{ origen }}" name="origen">
     <select name="destino" id="destino" >
         <option  value="" disabled selected>--Escoja un Destino--</option>
         {% for destino in destinos %}

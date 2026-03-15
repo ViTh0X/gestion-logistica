@@ -29,12 +29,18 @@ class ItemsFormSerializable(forms.ModelForm):
     
     class Meta:
         model = Items
-        fields = ['nombre_item','marca_item','modelo_item','serie_item','tipo_moneda','precio_unitario','id_estado']
+        fields = ['comprobante_contable','factura_boleta','fecha_contable','nombre_item','marca_item','modelo_item','serie_item','tipo_moneda','precio_unitario','id_estado']
         widgets = {
             'precio_unitario': forms.NumberInput(attrs={
                 'step':'0.01',
-                'min':'0.00'                
-            })
+                'min':'0.00'}
+            ),
+            'fecha_contable': forms.DateInput(
+                format='%d-%m-%Y',
+                attrs={
+                    'type':'date'
+                }
+            )
         }
         
 class ProveedoresForm(forms.ModelForm)            :

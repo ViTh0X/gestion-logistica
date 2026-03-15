@@ -1,0 +1,20 @@
+<div class="formularios_pequeño" >
+    <h1 class="no-margin">Seleccione Items</h1>        
+    <form method="POST">
+        {% csrf_token %}            
+        <div class="campos_textosimple">
+            <input type="text" name="nombre_item" id="buscador" placeholder='ID Articulo'>
+            <button hx-get={% url 'buscar_item_movimiento' %} hx-target='#resultados_busquedas' hx-include='#buscador'                
+            class="boton_formulario"  >
+                Buscar
+            </button>
+        </div>
+        <div class="tabla_grande_buscador_mov">
+            <table class="tabla_informacion"> 
+                <tbody id="resultados_busquedas">
+                </tbody>
+            </table>
+        </div>       
+    </form>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</div>    

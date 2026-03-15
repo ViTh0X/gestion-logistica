@@ -1,0 +1,16 @@
+{% for items in items_filtrados %}
+<tr>
+    <td class="columna_busca_proveedor">
+        <a hx-get="{% url 'seleccionar_item_mov' pk=items.id_item %}"
+            hx-target="#contenedor-movimientos"
+            hx-swap="innerHTML">                
+            {{ items.id_item }}-{{ items.nombre_item }}-{{ items.marca_item }}-{{ items.modelo_item}}-{{ items.serie_item }}</a>
+    </td> 
+</tr>    
+{% empty %}
+<tr>
+    <td class="columna_busca_proveedor">
+        <p>!No se encontro el Articulo!</p>
+    </td> 
+</tr>    
+{% endfor %}

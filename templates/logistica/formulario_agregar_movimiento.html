@@ -27,7 +27,8 @@
                 </div>            
             </div>            
             <hr>
-            <div class="opciones_movimientos" id="contenedor-movimientos">
+            {% comment %} class="opciones_movimientos" {% endcomment %}
+            <div  id="contenedor-movimientos">
                 <h2 class="no-margin">Opciones Añadir Articulos</h2>
                 <div class="movimientos_fila1">
                     <select name="articulo" >
@@ -61,16 +62,20 @@
             </div>            
             <div class="tabla_grande_container_movimientos">
                 <table class="tabla_informacion">
-                    <thead>
+                    <thead> 
                         <tr>                                                        
                             <th>NombreArticulo</th>                            
-                            <th>TipoMovimiento</th>
+                            <th>Voucher</th>
+                            <th>Referencia</th>
+                            <th>Factura</th>
+                            <th>CNT-Fecha</th>
+                            <th>Movimiento</th>
                             <th>Origen</th>
                             <th>Destino</th>
                             <th>Cantidad</th>
-                            <th>Referencia</th>
+                            <th>MovRef</th>
                             <th>Observaciones</th>                         
-                            <th>T</th>                        
+                            <th>Menu</th>                        
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">

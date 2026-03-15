@@ -5,6 +5,9 @@
     <div class="formularios" >
         <h1 class="no-margin">Editando Articulo ID: #{{ item.id_item }}</h1>
         <div>
+            <p class="mensaje_error">{{ form.comprobante_contable.errors }}</p>
+            <p class="mensaje_error">{{ form.factura_boleta.errors }}</p>
+            <p class="mensaje_error">{{ form.fecha_contable.errors }}</p>
             <p class="mensaje_error">{{ form.nombre_item.errors }}</p>
             <p class="mensaje_error">{{ form.marca_item.errors }}</p> 
             <p class="mensaje_error">{{ form.modelo_item.errors }}</p> 
@@ -14,6 +17,18 @@
         </div>        
         <form method="POST">
             {% csrf_token %}
+            <div class="campos_textosimple">
+                <label for="">Comprobante Contable:</label>
+                {{ form.comprobante_contable }}
+            </div>
+            <div class="campos_textosimple">
+                <label for="">Factura/Boleta:</label>
+                {{ form.factura_boleta }}
+            </div>
+            <div class="campos_textosimple">
+                <label for="">Fecha Contable:</label>
+                {{ form.fecha_contable }}
+            </div>
             <div class="campos_textosimple">
                 <label for="">Nombre:</label>
                 {{ form.nombre_item }}

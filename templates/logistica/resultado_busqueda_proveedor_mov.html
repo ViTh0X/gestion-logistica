@@ -1,0 +1,16 @@
+{% for proveedor in proveedores_encontrados %}
+<tr>
+    <td class="columna_busca_proveedor">
+        <a hx-get="{% url 'seleccionar_proveedor_mov' pk=proveedor.id_proveedor %}"
+            hx-target="#contenedor-movimientos"
+            hx-swap="innerHTML">                
+            {{ proveedor.documento  }}-{{ proveedor.nombre }}</a>
+    </td> 
+</tr>    
+{% empty %}
+<tr>
+    <td class="columna_busca_proveedor">
+        <p>🡇No se encontro proveedor, Agregue el proveedor para continuar🡇</p>
+    </td> 
+</tr>    
+{% endfor %}

@@ -116,11 +116,57 @@ def seleccionar_proveedor(request):
 
 
 @login_required(login_url="login_logistica")
+def seleccionar_item_mov(request,pk):    
+    articulo = Items.objects.get(pk=pk)        
+    origen = articulo.proveedor
+    almacenes = Almacenes.objects.values_list('nombre_almacen', flat=True)
+    colaboradores_activos = EstadoColaboradores.objects.get(pk=1)
+    colaboradores_activos =  Colaboradores.objects.values_list('nombre_colaborador',flat=True).filter(estado_colaboradores=colaboradores_activos)    
+    destinos = list(almacenes) + list(colaboradores_activos)        
+    return render(request,'logistica/opciones_movimientos_filtradas_ingreso_serial.html',{'articulo':articulo,'origen':origen,'destinos':destinos})
+
+
+@login_required(login_url="login_logistica")
+def seleccionar_proveedor_mov(request,pk):
+    tipo_articulo_stock = TipoItems.objects.get(pk=1)
+    proveedor = Proveedores.objects.get(pk=pk)
+    articulos = Items.objects.all()
+    articulos = Items.objects.filter(tipo_item=tipo_articulo_stock)    
+    origen = proveedor
+    destinos = Almacenes.objects.values_list('nombre_almacen', flat=True)    
+    
+    return render(request,'logistica/opciones_movimientos_filtradas_ingreso.html',{'proveedor':proveedor,'articulos':articulos,'origen':origen,'destinos':destinos})            
+
+
+@login_required(login_url="login_logistica")
 def buscar_proveedor(request):
     data_input = request.GET.get('ruc','').strip()
     proveedores_encontrados = Proveedores.objects.filter(documento__icontains=data_input)    
     return render(request,'logistica/resultado_busqueda_proveedor.html',{'proveedores_encontrados':proveedores_encontrados})
 
+@login_required(login_url="login_logistica")
+def buscar_proveedor_movimiento(request):
+    data_input = request.GET.get('ruc','').strip()
+    proveedores_encontrados = Proveedores.objects.filter(documento__icontains=data_input)    
+    return render(request,'logistica/resultado_busqueda_proveedor_mov.html',{'proveedores_encontrados':proveedores_encontrados})
+
+@login_required(login_url="login_logistica")
+def buscar_item_movimiento(request):
+    data_input = request.GET.get('nombre_item','').strip()
+    items_filtrados = Items.objects.filter(nombre_item__icontains=data_input)    
+    return render(request,'logistica/resultado_busqueda_item_mov.html',{'items_filtrados':items_filtrados})
+
+
+@login_required(login_url="login_logistica")
+def agregar_proveedor_stock(request):    
+    if request.method == 'POST':
+        form = ProveedoresForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('agregar_movimientos')
+    else:
+        form = ProveedoresForm()
+    return render(request,'logistica/formulario_agregar_proveedor_stock.html',{'form':form})        
 
 @login_required(login_url="login_logistica")
 def agregar_proveedor_serializable(request):    
@@ -183,20 +229,6 @@ def informacion_articulo_serializable_celular(request,pk):
     inventario = HistorialInventarios.objects.filter(id_item=pk)        
     return render(request,'logistica/ver_info_item_serializable_celular.html',{'item':item,'inventario':inventario})
 
-
-@login_required(login_url="login_logistica")
-def editar_item(request,pk):        
-    item = get_object_or_404(Items,pk=pk)
-    año = datetime.now().year
-    inventario = HistorialInventarios.objects.filter(id_item=pk,fecha_modificacion__year=año)    
-    if request.method == 'POST':
-        form = ItemsForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-        return redirect('logistica_items')
-    else:
-        form = ItemsForm(instance=item)
-    return render(request,'logistica/formulario_editar_item.html',{'form':form,'item':item,'inventario':inventario})
     
 @login_required(login_url='login_logistica')    
 def inventariar_articulo(request,pk):
@@ -516,6 +548,10 @@ def agregar_movimientos(request):
 
 @login_required(login_url="login_logistica")
 def agregar_fila_item(request):
+    voucher = request.POST.get('voucher','')
+    referencia = request.POST.get('referencia','')
+    factura = request.POST.get('factura','')
+    fecha_contable = request.POST.get('fecha_contable','')
     movimiento = request.POST.get('tipo_movimiento')
     observaciones = request.POST.get('observaciones')
     origen = request.POST.get('origen')
@@ -548,6 +584,10 @@ def agregar_fila_item(request):
     
 
     context = {
+        'fecha_contable':fecha_contable,
+        'voucher':voucher,
+        'referencia':referencia,
+        'factura':factura,
         'articulo': articulo,
         'tipo_movimiento':tipo_movimiento,
         'origen':origen,
@@ -567,17 +607,8 @@ def filtrar_campos_movimientos(request):
     tipo_articulo_stock = TipoItems.objects.get(id_tipo=1)
     tipo_articulo_serial = TipoItems.objects.get(id_tipo=2)    
     colaboradores_activos = EstadoColaboradores.objects.get(codigo_estado=1)
-    if movimientos == "1":
-        articulos = Items.objects.filter(tipo_item=tipo_articulo_stock,id_estado__in=articulo_tipo_no_baja)
-        origenes = ['Proveedor']
-        destinos = Almacenes.objects.values_list('nombre_almacen', flat=True)
-        mov_refs = ItemsMovimientos.objects.all()
-        context ={
-            'articulos':articulos,
-            'origenes':origenes,
-            'destinos':destinos,
-            'mov_refs':mov_refs,            
-        }
+    if movimientos == "1":       
+        return render(request,'logistica/seleccionar_proveedor_movimientos.html')
     elif movimientos == "2":
         articulos = Items.objects.filter(id_estado__in=articulo_tipo_no_baja,id_usuario__isnull=True)
         almacenes = Almacenes.objects.values_list('nombre_almacen', flat=True)
@@ -630,7 +661,7 @@ def filtrar_campos_movimientos(request):
             'destinos':destinos,
             'mov_refs':mov_refs,
         }
-    else:
+    elif movimientos == "6":
         articulos = Items.objects.filter(tipo_item=tipo_articulo_stock,id_estado__in=articulo_tipo_no_baja,id_usuario__insull=False)
         almacenes = Almacenes.objects.values_list('nombre_almacen', flat=True)
         colaboradores_activos =  Colaboradores.objects.values_list('nombre_colaborador',flat=True).filter(estado_colaboradores=colaboradores_activos)
@@ -643,6 +674,8 @@ def filtrar_campos_movimientos(request):
             'destinos':destinos,
             'mov_refs':mov_refs,
         }
+    elif movimientos == "7":
+        return render(request,'logistica/seleccionar_items_movimientos.html')
     return render(request,'logistica/opciones_movimientos_filtradas.html',context)        
 
 @login_required(login_url="login_logistica")

@@ -6,40 +6,49 @@
         <h1 class="no-margin">Informacion de Articulo ID: #{{ item.id_item }}</h1>             
         <div>
             <div class="campos_textosimple">
-                <label for="">Nombre: {{ item.nombre_item }}</label>                
+                <label for="">Nombre: <span class="texto_normal">{{ item.nombre_item }}</span></label>                              
             </div>
             <div class="campos_textosimple">
-                <label for="">Estado: {{ item.id_estado }}</label>                
+                <label for="">Estado: <span class="texto_normal">{{ item.id_estado }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Marca: {{ item.marca_item }}</label>                
+                <label for="">Comprobante Conta: <span class="texto_normal">{{ item.comprobante_contable }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Modelo: {{ item.modelo_item }}</label>                
+                <label for="">Fecha Conta: <span class="texto_normal">{{ item.fecha_contable }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">N° Serie: {{ item.serie_item }}</label>                
+                <label for="">Factura/Boleta: <span class="texto_normal">{{ item.factura_boleta }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Stock: {{ item.cantidad_items }}</label>                
+                <label for="">Marca: <span class="texto_normal">{{ item.marca_item }}</span></label>                
+            </div>
+            <div class="campos_textosimple">
+                <label for="">Modelo: <span class="texto_normal">{{ item.modelo_item }}</span></label>                
+            </div>
+            <div class="campos_textosimple">
+                <label for="">N° Serie: <span class="texto_normal">{{ item.serie_item }}</span></label>                
+            </div>
+            <div class="campos_textosimple">
+                <label for="">Stock: <span class="texto_normal">{{ item.cantidad_items }}</span></label>                
             </div>                                    
             <div class="campos_textosimple">
-                <label for="">Moneda: {{ item.tipo_moneda }}</label>                
+                <label for="">Moneda: <span class="texto_normal">{{ item.tipo_moneda }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Precio Unitario: {{ item.precio_unitario }}</label>                
+                <label for="">Precio Unitario: <span class="texto_normal">{{ item.precio_unitario }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Proveedor: {{ item.proveedor }}</label>                                
+                <label for="">Proveedor: <span class="texto_normal">{{ item.proveedor }}</span></label>                                
             </div>
             <div class="campos_textosimple">
-                <label for="">Almacen: {{ item.id_almacen|default:"No asignado" }}</label>                
+                <label for="">Almacen: <span class="texto_normal">{{ item.id_almacen|default:"No asignado" }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Colaborador: {{ item.id_usuario|default:"No asignado" }}</label>                
+                <label for="">Colaborador: <span class="texto_normal">{{ item.id_usuario|default:"No asignado" }}</span></label>                
             </div>
             <div class="campos_textosimple">
-                <label for="">Area: {{ item.id_area|default:"No asignado" }}</label>                
+                <label for="">Area: <span class="texto_normal">{{ item.id_area|default:"No asignado" }}</span></label>                
             </div>
             <div class="campos_textoopciones">
                 <label for="">Historial de Inventarios:</label>

@@ -138,7 +138,7 @@
                             </svg>
                         </a>                                            
                         {% endif %}   
-                        {% if item.tipo_item.id_tipo == 1 %}
+                        {% comment %} {% if item.tipo_item.id_tipo == 1 %}
                         <a class="enlaces" title="EDITAR ARTICULO" href="{% url 'editar_item_stock' pk=item.id_item %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +172,7 @@
                             <path d="M13.5 6.5l4 4" />
                             </svg>
                         </a>                                            
-                        {% endif %}                        
+                        {% endif %}                         {% endcomment %}
 
                         <a class="enlaces" title="VER HISTORIAL DE INVENTARIO" href="{% url 'historial_inventario_articulo' pk=item.id_item %}">
                             <svg

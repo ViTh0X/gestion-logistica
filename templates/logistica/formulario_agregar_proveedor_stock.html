@@ -1,0 +1,28 @@
+{% extends "../layout_logistica.html" %}
+{% block titulo %}Creando Articulo{% endblock %}
+{% block contenido %}
+<main>
+    <div class="formularios" >
+        <h1 class="no-margin">Creando Proveedor:</h1>
+        <div>
+            <p class="mensaje_error">{{ form.documento.errors }}</p>            
+            <p class="mensaje_error">{{ form.nombre.errors }}</p>            
+        </div>        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="campos_textosimple">
+                <label for="">N° Documento:</label>
+                {{ form.documento }}
+            </div>           
+            <div class="campos_textosimple">
+                <label for="">Nombre:</label>
+                {{ form.nombre }}
+            </div>                   
+            <div class="botones_formularios">
+                <a class="boton_enlace a1" href="{% url 'seleccionar_proveedor' %}">← Volver a Proovedores</a>
+                <button class="boton_formulario" type="submit">Crear Proveedor</button>
+            </div>
+        </form>
+    </div>    
+</main>
+{% endblock  %}
