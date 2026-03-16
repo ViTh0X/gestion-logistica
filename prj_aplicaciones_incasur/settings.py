@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-t-+*oxx(vuq18l!t#60bgosb7eg1ab-ivhq-3fstivi5rt0$k@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['127.0.0.1','192.168.1.8','192.168.0.25']
-ALLOWED_HOSTS = ['127.0.0.1','192.168.0.25']
+ALLOWED_HOSTS = ['127.0.0.1','192.168.1.8','192.168.0.25']
+#ALLOWED_HOSTS = ['127.0.0.1','192.168.0.25']
 
 # Application definition
 
@@ -122,20 +122,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-#FORCE_SCRIPT_NAME = '/aplicaciones-incasur'
+FORCE_SCRIPT_NAME = '/aplicaciones-incasur'
 
-#STATIC_URL = '/aplicaciones-incasur/static/'
-STATIC_URL = '/static/'
+STATIC_URL = '/aplicaciones-incasur/static/'
+#STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-#STATIC_ROOT = '/var/www/aplicaciones_incasur/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = '/var/www/aplicaciones_incasur/static/'
 
-MEDIA_URL = '/media/'
-#MEDIA_URL = '/aplicaciones-incasur/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-#MEDIA_ROOT = '/var/www/aplicaciones_incasur/media/'
+#MEDIA_URL = '/media/'
+MEDIA_URL = '/aplicaciones-incasur/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = '/var/www/aplicaciones_incasur/media/'
 
-#SESSION_COOKIE_NAME = 'aplicaciones_incasur'
+SESSION_COOKIE_NAME = 'aplicaciones_incasur'
