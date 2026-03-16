@@ -36,11 +36,15 @@
                     <th>Cabezera</th>
                     <th>Id</th>
                     <th>NombreArticulo</th>
-                    <th>TipoMovimiento</th>
+                    <th>Voucher</th>
+                    <th>Referencia</th>
+                    <th>Factura</th>
+                    <th>CNT-Fecha</th>
+                    <th>Movimiento</th>
                     <th>Origen</th>
                     <th>Destino</th>
                     <th>Cantidad</th>
-                    <th>Referencia</th>
+                    <th>MovRef</th>
                     <th>Observaciones</th>
                     <th>PDF</th>
                     <th>Fecha</th>
@@ -51,6 +55,10 @@
                 <tr>                    
                     <td>{{ movimiento.id_movimiento_cabezera.id_cabezera }}</td>                    
                     <td>{{ movimiento.id_movimiento }}</td>
+                    <td>{{ movimiento.voucher }}</td>
+                    <td>{{ movimiento.referencia }}</td>
+                    <td>{{ movimiento.fecha_contable }}</td>
+                    <td>{{ movimiento.factura }}</td>
                     <td>{{ movimiento.id_item.nombre_item }}</td>
                     <td>{{ movimiento.tipo_movimiento.nombre_movimiento }}</td>
                     <td>{{ movimiento.nombre_origen }}</td>
