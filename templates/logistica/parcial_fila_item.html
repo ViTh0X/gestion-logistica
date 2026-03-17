@@ -16,8 +16,8 @@
         <input type="hidden" name="items_factura[]" value="{{ factura }}">
     </td>
     <td>
-        {{ fecha_contable }}
-        <input type="hidden" name="items_fechacontable[]" value="{{ fecha_contable }}">
+        {{ fecha_contable|date:"Y-m-d" }}
+        <input type="hidden" name="items_fechacontable[]" value="{{ fecha_contable|date:'Y-m-d' }}">
     </td>
     <td class="celda_recortada">
         {{ tipo_movimiento }}

@@ -42,7 +42,7 @@ def generar_pdf_movimiento(cabecera_id):
     
     if not pdf.err:
         # 3. Guardar el PDF en el modelo
-        nombre_archivo = f"movimiento_{cabecera.id_cabezera}.pdf"
+        nombre_archivo = f"movimiento_{cabecera.id_cabecera}.pdf"
         cabecera.pdf_archivo.save(nombre_archivo, ContentFile(result.getvalue()), save=True)
         return True
     return False
@@ -65,6 +65,7 @@ def agregar_item_tipo_item(request):
         else:
             return redirect('seleccionar_proveedor')    
     return render(request,'logistica/seleccionar_tipo_item.html',{'tipos_item':tipos_item})
+
     
 @login_required(login_url="login_logistica")
 def agregar_item_stock(request,pk):
@@ -76,7 +77,7 @@ def agregar_item_stock(request,pk):
             form_item_stock.cantidad_items = 0
             form_item_stock.tipo_item = tipo_item                                  
             form_item_stock.save()                        
-            qr_link = f"http://192.168.0.25:8000/logistica/informacion-articulo-stock/{form_item_stock.pk}"
+            qr_link = f"http://192.168.1.31:8000/logistica/informacion-articulo-stock/{form_item_stock.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
             nombre_archivo_qr = generar_qr(form_item_stock.pk,qr_link)
             form_item_stock.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
@@ -86,6 +87,7 @@ def agregar_item_stock(request,pk):
         form = ItemsFormStock()
         #form = ItemsFormStock(initial={'tipo_item':tipo_item})
     return render(request,'logistica/formulario_agregar_item_stock.html',{'form':form})
+
 
 @login_required(login_url="login_logistica")
 def agregar_item_serializable(request,pk):
@@ -99,7 +101,7 @@ def agregar_item_serializable(request,pk):
             form_item_serializable.tipo_item = item_serialisable
             form_item_serializable.proveedor = proveedor_seleccionado
             form_item_serializable.save()
-            qr_link = f"http://192.168.0.25:8000/logistica/informacion-articulo-serializable-celular/{form_item_serializable.pk}"
+            qr_link = f"http://192.168.1.31:8000/logistica/informacion-articulo-serializable-celular/{form_item_serializable.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
             nombre_archivo_qr = generar_qr(form_item_serializable.pk,qr_link)
             form_item_serializable.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
@@ -122,7 +124,7 @@ def seleccionar_item_mov(request,pk):
     almacenes = Almacenes.objects.values_list('nombre_almacen', flat=True)
     colaboradores_activos = EstadoColaboradores.objects.get(pk=1)
     colaboradores_activos =  Colaboradores.objects.values_list('nombre_colaborador',flat=True).filter(estado_colaboradores=colaboradores_activos)    
-    destinos = list(almacenes) + list(colaboradores_activos)        
+    destinos = almacenes       
     return render(request,'logistica/opciones_movimientos_filtradas_ingreso_serial.html',{'articulo':articulo,'origen':origen,'destinos':destinos})
 
 
@@ -153,7 +155,8 @@ def buscar_proveedor_movimiento(request):
 @login_required(login_url="login_logistica")
 def buscar_item_movimiento(request):
     data_input = request.GET.get('nombre_item','').strip()
-    items_filtrados = Items.objects.filter(nombre_item__icontains=data_input)    
+    tipo_item = TipoItems.objects.get(pk=2)
+    items_filtrados = Items.objects.filter(nombre_item__icontains=data_input,tipo_item=tipo_item)    
     return render(request,'logistica/resultado_busqueda_item_mov.html',{'items_filtrados':items_filtrados})
 
 
@@ -397,7 +400,7 @@ def agregar_movimientos(request):
     colaboradores = Colaboradores.objects.filter(estado_colaboradores=estado_colaborador_activo)        
     tipos_movimiento = TiposMovimiento.objects.all()
     movimientos = ItemsMovimientos.objects.all()
-    cabezera_id = ""
+    cabecera_id = ""
     if request.method == 'POST':
         colaborador_id = request.POST.get('colaborador_id')
         firma_data = request.POST.get('firma_base64')
@@ -405,7 +408,7 @@ def agregar_movimientos(request):
         vouchers = request.POST.getlist('items_voucher[]')
         referencia = request.POST.getlist('items_referencia[]')
         factura = request.POST.getlist('items_factura[]')
-        fecha_contable = request.getlist('items_fechacontable[]')
+        fecha_contable = request.POST.getlist('items_fechacontable[]')
         items_tipo_movimiento = request.POST.getlist('items_tipo_movimiento[]')
         items_origen = request.POST.getlist('items_origen[]')
         items_destino = request.POST.getlist('items_destino[]')
@@ -419,11 +422,12 @@ def agregar_movimientos(request):
             colaborador_confirma=colaborador,
             firma_base64=firma_data
         )
-        cabecera.save()
-        cabezera_id = cabecera.id_cabezera
-        for i_id,i_vouch,i_refe,i_fact,i_fe_cnt,i_tip_mov,i_ori,i_des,cant,obs,i_mov_ref in zip(items_ids,vouchers,referencia,factura,fecha_contable,items_tipo_movimiento,items_origen,items_destino, cantidades,items_observaciones,items_mov_ref):
+        cabecera.save()        
+        cabecera_id = cabecera.id_cabecera
+        for i_id,i_vouch,i_refe,i_fact,fecha_cnt,i_tip_mov,i_ori,i_des,cant,obs,i_mov_ref in zip(items_ids,vouchers,referencia,factura,fecha_contable,items_tipo_movimiento,items_origen,items_destino, cantidades,items_observaciones,items_mov_ref):
             articulo = Items.objects.select_for_update().get(pk=i_id)            
-            tipos_movimiento = TiposMovimiento.objects.get(id_tipo=int(i_tip_mov)) 
+            tipos_movimiento = TiposMovimiento.objects.get(id_tipo=int(i_tip_mov))             
+            i_fe_cnt = datetime.strptime(fecha_cnt, '%Y-%m-%d').date()
             if not i_vouch or i_vouch == '':
                 i_vouch = None 
             if not i_refe or i_refe == '':
@@ -434,8 +438,10 @@ def agregar_movimientos(request):
                 i_fact = None                        
             if not i_fe_cnt or i_fe_cnt == '':
                 i_fe_cnt = None
+            if not i_mov_ref or i_mov_ref == '':
+                i_mov_ref = None                
             else:
-                mov_ref = ItemsMovimientos.objects.filter(id_movimiento=i_mov_ref).first()            
+                i_mov_ref = ItemsMovimientos.objects.filter(id_movimiento=i_mov_ref).first()            
             # Bloqueo de fila para evitar errores de concurrencia
             cant = int(cant)
             if i_tip_mov == "1":                
@@ -451,13 +457,14 @@ def agregar_movimientos(request):
                     nombre_origen=i_ori, # O el que definas
                     nombre_destino=i_des,
                     cantidad_movimiento=cant,
-                    id_movimiento_referencia=mov_ref,                    
+                    id_movimiento_referencia=i_mov_ref,                    
                     observaciones=obs
                 )
                 articulo.id_almacen = almacen               
                 articulo.cantidad_items += cant
                 articulo.save()                                    
             elif i_tip_mov == "2":
+                colaborador = get_object_or_404(Colaboradores,nombre_colaborador=i_des )
                 if articulo.cantidad_items >= cant:
                     ItemsMovimientos.objects.create(
                         id_movimiento_cabezera=cabecera,
@@ -470,7 +477,7 @@ def agregar_movimientos(request):
                         nombre_origen=i_ori, # O el que definas
                         nombre_destino=i_des,
                         cantidad_movimiento=cant,
-                        id_movimiento_referencia=mov_ref,                    
+                        id_movimiento_referencia=i_mov_ref,                    
                         observaciones=obs
                     )
                     articulo.id_usuario = colaborador
@@ -495,7 +502,7 @@ def agregar_movimientos(request):
                     nombre_origen=i_ori, # O el que definas
                     nombre_destino=i_des,
                     cantidad_movimiento=cant,
-                    id_movimiento_referencia=mov_ref,                    
+                    id_movimiento_referencia=i_mov_ref,                    
                     observaciones=obs
                 )
                 articulo.id_usuario = None
@@ -506,25 +513,25 @@ def agregar_movimientos(request):
                     articulo.cantidad_items = 1
                 articulo.save()                
             elif i_tip_mov == "4":
-                if articulo.cantidad_items >= cant:
-                    ItemsMovimientos.objects.create(
-                        id_movimiento_cabezera=cabecera,
-                        id_item=articulo,
-                        voucher=i_vouch,
-                        referencia=i_refe,                    
-                        fecha_contable=i_fe_cnt,
-                        factura=i_fact,
-                        tipo_movimiento=tipos_movimiento,
-                        nombre_origen=i_ori, # O el que definas
-                        nombre_destino=i_des,
-                        cantidad_movimiento=cant,
-                        id_movimiento_referencia=mov_ref,                    
-                        observaciones=obs
-                    )
-                    articulo.cantidad_items = cant
-                    articulo.save()
-                else:
-                    raise Exception(f"Stock Modificado en ultimo Momento, No se Guardo el Movimiento {articulo.nombre_item}")            
+                #if articulo.cantidad_items >= cant:
+                ItemsMovimientos.objects.create(
+                    id_movimiento_cabezera=cabecera,
+                    id_item=articulo,
+                    voucher=i_vouch,
+                    referencia=i_refe,                    
+                    fecha_contable=i_fe_cnt,
+                    factura=i_fact,
+                    tipo_movimiento=tipos_movimiento,
+                    nombre_origen=i_ori, # O el que definas
+                    nombre_destino=i_des,
+                    cantidad_movimiento=cant,
+                    id_movimiento_referencia=i_mov_ref,                    
+                    observaciones=obs
+                )
+                articulo.cantidad_items = cant
+                articulo.save()
+                #else:
+                    #raise Exception(f"Stock Modificado en ultimo Momento, No se Guardo el Movimiento {articulo.nombre_item}")            
             elif i_tip_mov == "5":
                 estado_debaja = TipoEstadoItems.objects.get(pk=2)
                 if articulo.cantidad_items >= cant:
@@ -539,11 +546,11 @@ def agregar_movimientos(request):
                         nombre_origen=i_ori, # O el que definas
                         nombre_destino=i_des,
                         cantidad_movimiento=cant,
-                        id_movimiento_referencia=mov_ref,                    
+                        id_movimiento_referencia=i_mov_ref,                    
                         observaciones=obs
                     )
-                    articulo.id_usuario = None                    
-                    articulo.id_almacen = None
+                    #articulo.id_usuario = None                    
+                    #articulo.id_almacen = None
                     articulo.id_estado = estado_debaja
                     articulo.cantidad_items = cant
                     articulo.save()
@@ -562,10 +569,9 @@ def agregar_movimientos(request):
                         nombre_origen=i_ori, # O el que definas
                         nombre_destino=i_des,
                         cantidad_movimiento=cant,
-                        id_movimiento_referencia=mov_ref,                    
+                        id_movimiento_referencia=i_mov_ref,                    
                         observaciones=obs
-                    )
-                    articulo.id_usuario = None                    
+                    )                                        
                     articulo.cantidad_items = cant
                     articulo.save()
                 else:
@@ -583,7 +589,7 @@ def agregar_movimientos(request):
                         nombre_origen=i_ori, # O el que definas
                         nombre_destino=i_des,
                         cantidad_movimiento=cant,
-                        id_movimiento_referencia=mov_ref,                    
+                        id_movimiento_referencia=i_mov_ref,                    
                         observaciones=obs
                     )                                    
                     articulo.cantidad_items = cant
@@ -593,7 +599,7 @@ def agregar_movimientos(request):
             else:
                 raise Exception(f"Ubo un error No Finalizo correctamente {articulo.nombre_item}")
             
-        generar_pdf_movimiento(cabezera_id)                     
+        generar_pdf_movimiento(cabecera_id)                     
         return redirect('logistica_movimientos')
                         
     return render(request,'logistica/formulario_agregar_movimiento.html',{'colaboradores':colaboradores,'tipos_movimiento':tipos_movimiento,'movimientos':movimientos})
@@ -616,21 +622,34 @@ def agregar_fila_item(request):
     articulo = get_object_or_404(Items, pk=item_id)
     if cantidad < 0:
             return HttpResponse(f'<script>alert("No se Permite un ingreso Negativo");</script>', status=200)        
-    if movimiento == "2":        
+    if movimiento == "2":
+        voucher = articulo.comprobante_contable
+        fecha_contable = articulo.fecha_contable
+        factura = articulo.factura_boleta                
         if articulo.cantidad_items < cantidad:
             return HttpResponse(f'<script>alert("Stock insuficiente para {articulo.nombre_item}");</script>', status=200)
     if movimiento == "3":
+        voucher = articulo.comprobante_contable
+        fecha_contable = articulo.fecha_contable
+        factura = articulo.factura_boleta
         if mov_ref == "":
             return HttpResponse(f'<script>alert("Debe Elegir un Movimiento Referencia");</script>', status=200)
     if movimiento == "4":
         if observaciones == "":
             return HttpResponse(f'<script>alert("Debe Colocar el Motivo de Ajuste");</script>', status=200)
     if movimiento == "5":
+        voucher = articulo.comprobante_contable
+        fecha_contable = articulo.fecha_contable
+        factura = articulo.factura_boleta
         if observaciones == "":
             return HttpResponse(f'<script>alert("Debe Colocar el Motivo de Baja");</script>', status=200)
     if movimiento == "6":
         if mov_ref == "":
             return HttpResponse(f'<script>alert("Debe Elegir un Movimiento Referencia");</script>', status=200)        
+    if movimiento == "7":
+        voucher = articulo.comprobante_contable
+        fecha_contable = articulo.fecha_contable
+        factura = articulo.factura_boleta        
         if articulo.cantidad_items < cantidad:
             return HttpResponse(f'<script>alert("Stock insuficiente para {articulo.nombre_item}");</script>', status=200)
     # Validación de stock en el servidor
@@ -750,6 +769,13 @@ def logistica_colaboradores(request):
     colaboradores = Colaboradores.objects.filter(estado_colaboradores=estado_colaborador_activo)    
     items_colaborador = Items.objects.filter(id_usuario__in=colaboradores)
     return render(request,'logistica/colaboradores.html',{'colaboradores':colaboradores,'items_colaborador':items_colaborador})
+
+@login_required(login_url="login_logistica")
+def filtrar_colaboradores(request):
+    colaborador_pista = request.GET.get('colaborador','').strip()
+    colaboradores = Colaboradores.objects.filter(nombre_colaborador__icontains=colaborador_pista)
+    items_colaborador = Items.objects.filter(id_usuario__in=colaboradores)
+    return render(request,'logistica/colaboradores_filtrados.html',{'colaboradores':colaboradores,'items_colaborador':items_colaborador})
 
 
 def login_logistica(request):

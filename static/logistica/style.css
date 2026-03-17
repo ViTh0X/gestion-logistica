@@ -554,18 +554,18 @@ ul{
 .tabla_informacion thead{
     background-color: var(--colorSecundario);
     color: var(--blanco);    
-    font-size: 1.1rem;    
+    font-size: 1.2rem;    
     font-weight: bold;
 }
 .tabla_informacion tbody{    
-    font-size: 1rem;        
+    font-size: 1.2rem;        
 }
 @media (min-width:1024px){
     .tabla_informacion thead{        
-        font-size: 1.8rem;            
+        font-size: 1.4rem;            
     }   
     .tabla_informacion tbody{    
-        font-size: 1.5rem;        
+        font-size: 1.3rem;        
     }
 }
 .tabla_informacion td{

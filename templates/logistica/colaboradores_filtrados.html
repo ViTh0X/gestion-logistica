@@ -1,0 +1,18 @@
+<table class="tabla_informacion">                
+    <tbody>
+        {% for colaborador in colaboradores %}
+        <tr>
+            <td class="columna1_fija_colaborador">
+                <a href="{% url 'movimientos_por_colaborador' pk=colaborador.codigo_colaborador %}">{{ colaborador.nombre_colaborador }}</a>
+            </td>
+            <td class="columna2_fija_colaborador">
+                {% for item in items_colaborador %}
+                {% if item.id_usuario.codigo_colaborador == colaborador.codigo_colaborador %}
+                <a  href="{% url 'movimientos_por_item' pk=item.id_item %}">{{ item.nombre_item }}</a>      
+                {% endif %}
+                {% endfor %}                  
+            </td>                    
+        </tr>                
+        {% endfor %}                
+    </tbody>            
+</table>

@@ -4,7 +4,11 @@
 <main>
     <div class="menu_opciones">        
         <h1 class="no-margin">Colaboradores:</h1>                      
-        <input type="text" placeholder="Buscar x Nombre">        
+        <input type="text" placeholder="Buscar x Nombre" id="colaborador_pista" name="colaborador">
+        <button hx-get="{% url 'filtrar_colaboradores' %}" hx-target='#resultados_colaborador' hx-include='#colaborador_pista'                
+        class="boton_formulario"  >
+            Buscar
+        </button>        
     </div>
     <div class="mostrar_informacion_movimientos">
         <table class="tabla_informacion">
@@ -15,7 +19,7 @@
                 </tr>
             </thead>            
         </table>
-        <div class="tabla_grande_container"> 
+        <div class="tabla_grande_container" id="resultados_colaborador"> 
             <table class="tabla_informacion">                
                 <tbody>
                     {% for colaborador in colaboradores %}
@@ -36,5 +40,6 @@
             </table>
         </div>
     </div>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </main>
 {% endblock  %}

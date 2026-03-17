@@ -16,7 +16,7 @@
                 </div>
                 <div id="id_tipo_movimiento">                    
                     <select name="tipo_movimiento" id="tipo_movimiento" 
-                            hx-post={% url 'filtrar_campos_movimientos' %}
+                            hx-post="{% url 'filtrar_campos_movimientos' %}"
                             hx-target="#contenedor-movimientos"
                             hx-trigger="change">
                             <option value="" disabled selected>--Escoja un tipo de Movimiento--</option>

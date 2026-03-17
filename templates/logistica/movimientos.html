@@ -53,7 +53,7 @@
             <tbody>
                 {% for movimiento in movimientos%}
                 <tr>                    
-                    <td>{{ movimiento.id_movimiento_cabezera.id_cabezera }}</td>                    
+                    <td>{{ movimiento.id_movimiento_cabezera.id_cabecera }}</td>                    
                     <td>{{ movimiento.id_movimiento }}</td>
                     <td>{{ movimiento.voucher }}</td>
                     <td>{{ movimiento.referencia }}</td>
@@ -67,7 +67,7 @@
                     <td>ID:{{ movimiento.id_movimiento_referencia.id_movimiento }}</td>
                     <td>{{ movimiento.observaciones }}</td>                    
                     <td>                        
-                        <a href="{% url 'imprimir_pdf_movimientos_firmado' pk=movimiento.id_movimiento_cabezera.id_cabezera %}" title="IMPRIMIR PDF FIRMADO">
+                        <a href="{% url 'imprimir_pdf_movimientos_firmado' pk=movimiento.id_movimiento_cabezera.id_cabecera %}" title="IMPRIMIR PDF FIRMADO">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
