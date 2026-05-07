@@ -27,7 +27,7 @@
                     {% for colaborador in colaboradores %}
                     <tr>
                         <td class="columna1_fija_colaborador">
-                            <a href="{% url 'movimientos_por_colaborador' pk=colaborador.codigo_colaborador %}">{{ colaborador.nombre_colaborador }}</a>
+                            <a href="{% url 'movimientos_por_colaborador' pk=colaborador.id %}">{{ colaborador.nombre_colaborador }}</a>
                         </td>
                         <td class="columna2_fija_colaborador">
                             {% for item in items_colaborador %}
