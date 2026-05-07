@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_logistica',
-    'app_seguimiento_actividades',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'prj_aplicaciones_incasur.urls'
+ROOT_URLCONF = 'prj_logistica.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'prj_aplicaciones_incasur.wsgi.application'
+WSGI_APPLICATION = 'prj_logistica.wsgi.application'
 
 
 # Database
@@ -78,12 +77,8 @@ WSGI_APPLICATION = 'prj_aplicaciones_incasur.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('DATABASE_SERVER'),                                
-        'NAME': os.getenv('DATABASE_DB'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'PORT': os.getenv('DATABASE_PORT'),
+        'ENGINE': 'django.db.models.backends.sqlite3',        
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -122,20 +117,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-#FORCE_SCRIPT_NAME = '/aplicaciones-incasur'
 
-#STATIC_URL = '/aplicaciones-incasur/static/'
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-#STATIC_ROOT = '/var/www/aplicaciones_incasur/static/'
 
 MEDIA_URL = '/media/'
-#MEDIA_URL = '/aplicaciones-incasur/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-#MEDIA_ROOT = '/var/www/aplicaciones_incasur/media/'
 
-#SESSION_COOKIE_NAME = 'aplicaciones_incasur'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')

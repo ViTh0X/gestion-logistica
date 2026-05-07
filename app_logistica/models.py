@@ -6,10 +6,33 @@ import hashlib
 import os
 
 
+class CargoColaboradores(models.Model):
+    id = models.AutoField(primary_key=True)    
+    nombre_cargo = models.CharField(max_length=60)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+    class Meta:        
+        db_table = 'cargo_colaboradores'
+        
+    def __str__(self):
+        return self.nombre_cargo
+
+
+class EstadoColaboradores(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre_estado = models.CharField(max_length=20)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+    class Meta:        
+        db_table = 'estado_colaboradores' 
+        
+    def __str__(self):
+        return self.nombre_estado   
+
 
 # Create your models here.
 class Colaboradores(models.Model):
-    codigo_colaborador = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre_colaborador = models.CharField(max_length=150)
     usuario_sistema = models.CharField(max_length=25)
     correo = models.CharField(max_length=50)
@@ -19,47 +42,15 @@ class Colaboradores(models.Model):
     usuario_reloj_control = models.CharField(max_length=15)
     codigo_impresion_colaborador = models.CharField(max_length=20)
     cargo_colaborador = models.ForeignKey('CargoColaboradores', models.DO_NOTHING)
-    fecha_modificacion = models.DateTimeField()
+    fecha_modificacion = models.DateTimeField(auto_now=True)
     estado_colaboradores = models.ForeignKey('EstadoColaboradores', models.DO_NOTHING)
 
-    class Meta:
-        managed = False
-        db_table = 'colaboradores'
-        ordering = ['nombre_colaborador']
+    class Meta:        
+        db_table = 'colaboradores'        
         
     def __str__(self):
         return self.nombre_colaborador
-
-class CargoColaboradores(models.Model):
-    codigo_cargo = models.AutoField(primary_key=True)
-    nombre_cargo = models.CharField(max_length=60)
-
-    class Meta:
-        managed = False
-        db_table = 'cargo_colaboradores'
-
-
-class EstadoColaboradores(models.Model):
-    codigo_estado = models.AutoField(primary_key=True)
-    nombre_estado = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'estado_colaboradores'      
-        
-'''        
-class AreasEmpresa(models.Model):
-    id_area = models.AutoField(primary_key=True)
-    nombre_area = models.CharField(max_length=40)
-    descripcion_area = models.CharField(max_length=150)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
-        
-    class Meta:
-        db_table = 'areas_empresa'
-        
-    def __str__(self):
-        return self.nombre_area'''
-    
+          
     
 class Almacenes(models.Model):
     id_almacen = models.AutoField(primary_key=True)
@@ -76,7 +67,7 @@ class Almacenes(models.Model):
     
 
 class TipoEstadoItems(models.Model):
-    id_estado = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre_estado = models.CharField(max_length=60)
     descripcion_estado = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(auto_now=True)
@@ -88,7 +79,7 @@ class TipoEstadoItems(models.Model):
         return self.nombre_estado
     
 class TipoItems(models.Model):
-    id_tipo = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre_tipo = models.CharField(max_length=60)
     decripcion_tipo = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(auto_now=True)
@@ -100,7 +91,7 @@ class TipoItems(models.Model):
         return self.nombre_tipo
 
 class Proveedores(models.Model):
-    id_proveedor = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     documento = models.CharField(max_length=12,unique=True)
     nombre = models.CharField(max_length=120)
     fecha_modificacion = models.DateTimeField(auto_now=True)
@@ -112,7 +103,7 @@ class Proveedores(models.Model):
         return self.nombre
     
 class TipoMoneda(models.Model):
-    ip_tipo_moneda = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=10)
     logo = models.CharField(max_length=1)
     fecha_modificacion =  models.DateTimeField(auto_now=True)
@@ -124,7 +115,7 @@ class TipoMoneda(models.Model):
         return self.nombre
     
 class TiposInsumo(models.Model):    
-    id_tipo_insumo = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     denominacion = models.CharField(max_length=40)
     cuenta_contable_haber = models.CharField(max_length=20)
     cuenta_contable_debe = models.CharField(max_length=20)
@@ -139,7 +130,7 @@ class TiposInsumo(models.Model):
     
     
 class Items(models.Model):
-    id_item = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     comprobante_contable = models.CharField(max_length=20,blank=True,null=True)
     fecha_contable = models.DateField(blank=True,null=True)
     factura_boleta = models.CharField(max_length=20,blank=True,null=True)
@@ -162,14 +153,14 @@ class Items(models.Model):
     
     class Meta:
         db_table = 'items'
-        ordering = ['id_item']
+        ordering = ['id']
     
     def __str__(self):
         return self.nombre_item
     
     
 class HistorialInventarios(models.Model):
-    id_historial = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     id_item = models.ForeignKey(Items,on_delete=models.CASCADE)
     #nombre_area = models.CharField(max_length=40)
     nombre_almacen = models.CharField(max_length=60)
@@ -184,7 +175,7 @@ class HistorialInventarios(models.Model):
     
     
 class TiposMovimiento(models.Model):
-    id_tipo = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre_movimiento = models.CharField(max_length=60)
     decripcion_tipo = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(auto_now=True)
@@ -198,7 +189,7 @@ class TiposMovimiento(models.Model):
     
         
 class ItemMovimientosCabecera(models.Model):
-    id_cabecera = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     colaborador_confirma = models.ForeignKey(Colaboradores,on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now=True)
     firma_base64 = models.TextField()
@@ -218,7 +209,7 @@ class ItemMovimientosCabecera(models.Model):
         return f"Cabezera {self.id_cabezera} - {self.colaborador_confirma}"
     
 class ItemsMovimientos(models.Model):
-    id_movimiento = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     id_movimiento_cabezera = models.ForeignKey(ItemMovimientosCabecera,on_delete=models.CASCADE)
     id_item = models.ForeignKey(Items,on_delete=models.CASCADE)
     voucher = models.CharField(max_length=15,blank=True,null=True)
