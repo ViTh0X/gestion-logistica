@@ -21,7 +21,7 @@
                             hx-trigger="change">
                             <option value="" disabled selected>--Escoja un tipo de Movimiento--</option>
                         {% for tipo_movimiento in tipos_movimiento %}
-                            <option value="{{ tipo_movimiento.id_tipo }}">{{ tipo_movimiento.nombre_movimiento }}</option>
+                            <option value="{{ tipo_movimiento.id }}">{{ tipo_movimiento.nombre_movimiento }}</option>
                         {% endfor %}
                     </select>
                 </div>            
