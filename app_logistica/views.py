@@ -425,7 +425,7 @@ def imprimir_pdf_qrs(request):
 def agregar_movimientos(request):
     estado_colaborador_activo = EstadoColaboradores.objects.get(pk=1)
     colaboradores = Colaboradores.objects.filter(estado_colaboradores=estado_colaborador_activo)        
-    tipos_movimiento = TiposMovimiento.objects.all().exclude(id_tipo=6)
+    tipos_movimiento = TiposMovimiento.objects.all().exclude(id=6)
     movimientos = ItemsMovimientos.objects.all()
     cabecera_id = ""
     if request.method == 'POST':
