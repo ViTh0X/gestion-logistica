@@ -84,7 +84,7 @@ def agregar_item_stock(request,pk):
             form_item_stock.cantidad_items = 0
             form_item_stock.tipo_item = tipo_item                                  
             form_item_stock.save()                        
-            qr_link = f"http://192.168.1.31:8000/logistica/informacion-articulo-stock/{form_item_stock.pk}"
+            qr_link = f"https://lquispe.pythonanywhere.com/logistica/informacion-articulo-stock/{form_item_stock.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
             nombre_archivo_qr = generar_qr(form_item_stock.pk,qr_link)
             form_item_stock.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"
@@ -108,7 +108,7 @@ def agregar_item_serializable(request,pk):
             form_item_serializable.tipo_item = item_serialisable
             form_item_serializable.proveedor = proveedor_seleccionado
             form_item_serializable.save()
-            qr_link = f"http://192.168.1.31:8000/logistica/informacion-articulo-serializable-celular/{form_item_serializable.pk}"
+            qr_link = f"https://lquispe.pythonanywhere.com/informacion-articulo-serializable-celular/{form_item_serializable.pk}"
             #qr_link = f"http://192.168.1.8/aplicaciones-incasur/logistica/editar-item-celular/{item.pk}"
             nombre_archivo_qr = generar_qr(form_item_serializable.pk,qr_link)
             form_item_serializable.imagen_qr.name = f"imagenes_qr/{nombre_archivo_qr}"

@@ -34,7 +34,7 @@
                         <path d="M7 19v2" />
                         <path d="M17 19v2" />
                         </svg>
-                        ID:{{ item.id_item }} | {{ item.nombre_item }}
+                        ID:{{ item.id }} | {{ item.nombre_item }}
                     </p>
                     <p>
                         <svg
@@ -117,7 +117,7 @@
                     <img src="{{ item.imagen_qr.url }}" alt="QR de {{ item.nombre_item }}" width="85" height="85">
                     <nav class="opciones_item">
                         {% if item.tipo_item.id_tipo == 1 %}
-                        <a class="enlaces" title="VER MAS INFO" href="{% url 'informacion_articulo_stock' pk=item.id_item %}">
+                        <a class="enlaces" title="VER MAS INFO" href="{% url 'informacion_articulo_stock' pk=item.id %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -129,7 +129,7 @@
                             </svg>
                         </a>                                                                    
                         {% else %}
-                        <a class="enlaces" title="VER MAS INFO" href="{% url 'informacion_articulo_serializable' pk=item.id_item %}">
+                        <a class="enlaces" title="VER MAS INFO" href="{% url 'informacion_articulo_serializable' pk=item.id %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -141,7 +141,7 @@
                             </svg>
                         </a>                                            
                         {% endif %}                           
-                        <a class="enlaces" title="VER HISTORIAL DE INVENTARIO" href="{% url 'historial_inventario_articulo' pk=item.id_item %}">
+                        <a class="enlaces" title="VER HISTORIAL DE INVENTARIO" href="{% url 'historial_inventario_articulo' pk=item.id %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="25"
@@ -157,7 +157,7 @@
                             <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
                             </svg>
                         </a>
-                        <a class="enlaces" title="VER TODOS SUS MOVIMIENTOS" href="{% url 'movimientos_articulo' pk=item.id_item %}">
+                        <a class="enlaces" title="VER TODOS SUS MOVIMIENTOS" href="{% url 'movimientos_articulo' pk=item.id %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="25"
@@ -176,7 +176,7 @@
                             <path d="M18 15l3 3l-3 3" />
                             </svg>
                         </a>
-                        <a class="enlaces" title="ELIMINAR ARTICULO" href="{% url 'eliminar_articulo' pk=item.id_item %}">
+                        <a class="enlaces" title="ELIMINAR ARTICULO" href="{% url 'eliminar_articulo' pk=item.id %}">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="25"
