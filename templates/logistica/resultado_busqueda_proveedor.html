@@ -1,7 +1,7 @@
 {% for proveedor in proveedores_encontrados %}
 <tr>
     <td class="columna_busca_proveedor">
-        <a href="{% url 'agregar_item_serializable' pk=proveedor.id_proveedor %}">{{ proveedor.documento  }}-{{ proveedor.nombre }}</a>        
+        <a href="{% url 'agregar_item_serializable' pk=proveedor.id %}">{{ proveedor.documento  }}-{{ proveedor.nombre }}</a>        
     </td> 
 </tr>    
 {% empty %}
