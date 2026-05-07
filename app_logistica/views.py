@@ -68,7 +68,7 @@ def agregar_item_tipo_item(request):
         tipo_item = TipoItems.objects.get(pk=int(tipo_item_seleccionado))
         print("Hasta aqui esta bien")
         if tipo_item.id_tipo == 1:                
-            return redirect('agregar_item_stock',pk=tipo_item.id_tipo)
+            return redirect('agregar_item_stock',pk=tipo_item.id)
         else:
             return redirect('seleccionar_proveedor')    
     return render(request,'logistica/seleccionar_tipo_item.html',{'tipos_item':tipos_item})
